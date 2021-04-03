@@ -9,7 +9,7 @@ BTC:
 
 ETH:
     priceUnit:
-        - INR
+        - USD
     decimalPlace:
         - 2
         - 5

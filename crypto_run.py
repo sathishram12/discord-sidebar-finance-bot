@@ -46,7 +46,6 @@ def get_price(id_: str,
     import requests
     import time
     while True:
-        print (id_)
         r = requests.get('https://api.coingecko.com/api/v3/simple/price',
                          params={'ids': id_,
                                  'vs_currencies': ','.join(unitList).lower(), # doesn't need to be in lowercase but just in case
@@ -54,8 +53,6 @@ def get_price(id_: str,
         if r.status_code == 200:
             if verbose:
                 print('200 OK')
-            temp = r.json()[id_]
-            print (r.json()[id_])
             return r.json()[id_]
         else:
             if verbose:
@@ -95,17 +92,17 @@ def main(ticker: str,
     # 4. Connect w the bot
     client = discord.Client()
     numUnit = len(config['priceUnit'])
-    last_price = 0
 
-    async def send_update(priceList, unit, numDecimalPlace=None):
+    async def send_update(priceList, unit, numDecimalPlace=None, price_trend=None):
         if numDecimalPlace == 0:
             numDecimalPlace = None # round(2.3, 0) -> 2.0 but we don't want ".0"
 
         price_now = priceList[unit]
         price_now = round(price_now, numDecimalPlace)
         pct_change = priceList[f'{unit}_24h_change']
+       
 
-        nickname = f'{ticker.upper()} {get_currencySymbol(unit)}{price_now}'
+        nickname = f'{ticker.upper()} {get_currencySymbol(unit)}{price_now} {price_trend}'
         status = f'{get_currencySymbol(unit)} 24h: {pct_change:.2f}%'
         await client.get_guild(config['guildId']).me.edit(nick=nickname)
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching,
@@ -117,12 +114,18 @@ def main(ticker: str,
         """
         When discord client is ready
         """
+        last_price = 0
+       
         while True:
             # 5. Fetch price
-            #price_before = priceList[unit]
+            price_trend = '(↗)'
+            unit = config['priceUnit'][0].lower()
             priceList = get_price(id_, config['priceUnit'], verbose)
             # 6. Feed it to the bot
-            await send_update(priceList, config['priceUnit'][0].lower(), config['decimalPlace'][0])
+            if last_price > priceList[unit]:
+                price_trend = '(↙)'
+            await send_update(priceList, unit, config['decimalPlace'][0], price_trend)
+            last_price = priceList[unit]
     client.run(config['discordBotKey'])
 
 if __name__ == '__main__':
