@@ -1,1 +1,1 @@
-Worker: bot.sh
+Worker: ./bot.sh
