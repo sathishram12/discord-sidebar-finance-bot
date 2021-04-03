@@ -1,0 +1,28 @@
+BTC:
+    priceUnit:
+        - INR
+    decimalPlace:
+        - 0
+    updateFreq: 60
+    discordBotKey: ODI3NjEwMDczNDA3ODE1Njkw.YGdh8Q.-y72fd9GM49_nkqhwV1e0zKl0rE
+    guildId: 746010711003496589
+
+ETH:
+    priceUnit:
+        - INR
+    decimalPlace:
+        - 2
+        - 5
+    updateFreq: 60
+    discordBotKey: ODI3NjEwMDczNDA3ODE1Njkw.YGdh8Q.-y72fd9GM49_nkqhwV1e0zKl0rE
+    guildId: 746010711003496589
+
+YFI:
+    priceUnit:
+        - INR
+    decimalPlace:
+        - 0
+        - 2
+    updateFreq: 120
+    discordBotKey: ODI3NjEwMDczNDA3ODE1Njkw.YGdh8Q.-y72fd9GM49_nkqhwV1e0zKl0rE
+    guildId: 746010711003496589
